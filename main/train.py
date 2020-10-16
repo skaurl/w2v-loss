@@ -8,14 +8,14 @@ from common.optimizer import Adam
 from cbow import CBOW
 from skip_gram import SkipGram
 from common.util import create_contexts_target, to_cpu, to_gpu
-from dataset import ptb
+from dataset import nsmc
 
 window_size = 5
 hidden_size = 100
 batch_size = 100
 max_epoch = 10
 
-corpus, word_to_id, id_to_word = ptb.load_data('train')
+corpus, word_to_id, id_to_word = nsmc.load_data('total')
 
 vocab_size = len(word_to_id)
 
