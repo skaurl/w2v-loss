@@ -2,7 +2,7 @@ import sys
 sys.path.append('..')
 from common.np import *
 from common.layers import Embedding
-from main.negative_sampling_layer import NegativeSamplingLoss
+from word2vec.negative_sampling_layer import NegativeSamplingLoss
 
 class CBOW:
     def __init__(self, vocab_size, hidden_size, window_size, corpus):

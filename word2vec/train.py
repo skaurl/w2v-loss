@@ -5,8 +5,8 @@ from common.np import *
 import pickle
 from common.trainer import Trainer
 from common.optimizer import Adam
-from cbow import CBOW
-from skip_gram import SkipGram
+from word2vec.cbow import CBOW
+from word2vec.skip_gram import SkipGram
 from common.util import create_contexts_target, to_cpu, to_gpu
 from dataset import nsmc
 

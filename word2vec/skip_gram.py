@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 from common.layers import *
-from main.negative_sampling_layer import NegativeSamplingLoss
+from word2vec.negative_sampling_layer import NegativeSamplingLoss
 
 class SkipGram:
     def __init__(self, vocab_size, hidden_size, window_size, corpus):
