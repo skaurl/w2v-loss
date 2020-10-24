@@ -10,10 +10,10 @@ from word2vec.skip_gram import SkipGram
 from common.util import create_contexts_target, to_cpu, to_gpu
 from dataset import nsmc
 
-window_size = 5
+window_size = 2**1
 hidden_size = 100
-batch_size = 100
-max_epoch = 10
+batch_size = 2**7
+max_epoch = 2**2
 
 corpus, word_to_id, id_to_word = nsmc.load_data('total')
 
