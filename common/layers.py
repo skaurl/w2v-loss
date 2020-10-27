@@ -1,6 +1,6 @@
 from common.np import *
 from common.config import GPU
-from common.functions import cross_entropy_error
+from loss.cross_entropy import cross_entropy_error
 
 class SigmoidWithLoss:
     def __init__(self):

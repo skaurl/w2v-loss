@@ -31,7 +31,7 @@ class Trainer:
                 batch_t = t[iters*batch_size:(iters+1)*batch_size]
                 loss = model.forward(batch_x, batch_t)
                 model.backward()
-                params, grads = remove_duplicate(model.params, model.grads)  # 共有された重みを1つに集約
+                params, grads = remove_duplicate(model.params, model.grads)
                 if max_grad is not None:
                     clip_grads(grads, max_grad)
                 optimizer.update(params, grads)
