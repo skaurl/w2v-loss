@@ -23,7 +23,7 @@ with open(sys.path[1] + '/dataset/' + txt_file, 'r') as f:
 x = []
 y = np.array(data['label'])
 
-max_len = 20 #avg = 16.278745
+max_len = 20 # avg = 16.278745
 
 for i in range(len(data)):
     data.iloc[i,1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i,1]).strip()).split())
