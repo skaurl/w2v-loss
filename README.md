@@ -1,1 +1,1 @@
-# Graduation Thesis
+# word2vec의 손실 함수 변경에 따른 성능 비교 분석
