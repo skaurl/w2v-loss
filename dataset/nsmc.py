@@ -10,77 +10,86 @@ import pandas as pd
 import numpy as np
 import re
 from konlpy.tag import Mecab
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import skipgrams
 
 url_base = 'https://raw.githubusercontent.com/e9t/nsmc/master/'
-key_file = {
-    'total':'ratings.txt'
-}
-save_file = {
-    'total':'ratings.npy'
-}
-vocab_file = 'nsmc.vocab.pkl'
+
 dataset_dir = os.path.dirname(os.path.abspath(__file__))
 
 mecab = Mecab()
 
-def _download(file_name):
-    file_path = dataset_dir + '/' + key_file[file_name]
+def _download():
+    file_path = dataset_dir + '/' + "ratings.txt"
     if os.path.exists(file_path):
         return
-    print('Downloading ' + file_name + ' ... ')
+    print('Downloading ...')
     try:
-        urllib.request.urlretrieve(url_base + key_file[file_name], file_path)
+        urllib.request.urlretrieve(url_base + "ratings.txt", file_path)
     except urllib.error.URLError:
         import ssl
         ssl._create_default_https_context = ssl._create_unverified_context
-        urllib.request.urlretrieve(url_base + key_file[file_name], file_path)
+        urllib.request.urlretrieve(url_base + "ratings.txt", file_path)
     print('Done')
 
-def load_vocab():
-    vocab_path = dataset_dir + '/' + vocab_file
-    if os.path.exists(vocab_path):
-        with open(vocab_path, 'rb') as f:
-            word_to_id, id_to_word = pickle.load(f)
-        return word_to_id, id_to_word
-    word_to_id = {}
-    id_to_word = {}
-    data_type = 'total'
-    file_name = key_file[data_type]
-    file_path = dataset_dir + '/' + file_name
-    _download(data_type)
-    df = ''
-    for i in pd.read_csv(file_path, sep = '\t', engine='python')['document']:
-        text = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(i).strip()).split())
-        text = ' '.join(mecab.morphs(text))
-        df = df + '\n' + str(text)
-    words = df.strip().split()
-    for i, word in enumerate(words):
-        if word not in word_to_id:
-            tmp_id = len(word_to_id)
-            word_to_id[word] = tmp_id
-            id_to_word[tmp_id] = word
-    with open(vocab_path, 'wb') as f:
-        pickle.dump((word_to_id, id_to_word), f)
-    return word_to_id, id_to_word
+def main():
+    _download()
+    file_path = dataset_dir + '/' + "ratings.txt"
 
-def load_data(data_type='train'):
-    save_path = dataset_dir + '/' + save_file[data_type]
-    word_to_id, id_to_word = load_vocab()
-    if os.path.exists(save_path):
-        corpus = np.load(save_path)
-        return corpus, word_to_id, id_to_word
-    file_name = data_type
-    file_path = dataset_dir + '/' + key_file[data_type]
-    _download(file_name)
-    df = ''
-    for i in pd.read_csv(file_path, sep='\t', engine='python')['document']:
-        text = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(i).strip()).split())
-        text = ' '.join(mecab.morphs(text))
-        df = df + '\n' + str(text)
-    words = df.strip().split()
-    corpus = np.array([word_to_id[w] for w in words])
-    np.save(save_path, corpus)
-    return corpus, word_to_id, id_to_word
+    data = pd.read_csv(file_path, sep='\t', engine='python')[:100]
+
+    for i in range(len(data)):
+        data.iloc[i, 1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i, 1]).strip()).split())
+        data.iloc[i, 1] = " ".join(mecab.morphs(data.iloc[i, 1]))
+
+    df = data["document"].apply(lambda x: x.split())
+    df = df.to_list()
+
+    drop_train = [index for index, sentence in enumerate(df) if len(sentence) <= 1]
+    df = np.delete(df, drop_train, axis=0)
+
+    tokenizer = Tokenizer()
+    tokenizer.fit_on_texts(df)
+
+    word2idx = tokenizer.word_index
+    idx2word = {v: k for k, v in word2idx.items()}
+
+    with open(dataset_dir + '/' + "word2idx.pickle", 'wb') as f:
+        pickle.dump(word2idx, f)
+
+    with open(dataset_dir + '/' + "idx2word.pickle", 'wb') as f:
+        pickle.dump(idx2word, f)
+
+    df = tokenizer.texts_to_sequences(df)
+
+    vocab_size = len(word2idx) + 1
+
+    skip_grams = [skipgrams(sample, vocabulary_size=vocab_size, window_size=2) for sample in df]
+
+    inout = []
+
+    for i in range(len(skip_grams)):
+        inout.extend(skip_grams[i][0])
+
+    input = []
+    output = []
+
+    for i in range(len(inout)):
+        inin = [0] * (vocab_size - 1)
+        inin[inout[i][0] - 1] = 1
+        input.append(inin)
+
+        outout = [0] * (vocab_size - 1)
+        outout[inout[i][1] - 1] = 1
+        output.append(outout)
+
+    input = np.array(input)
+    output = np.array(output)
+
+    np.save(dataset_dir + '/' + "input", input)
+    np.save(dataset_dir + '/' + "output", input)
+
+    return df, word2idx, idx2word, input, output
 
 if __name__ == '__main__':
-    load_data('total')
+    main()
