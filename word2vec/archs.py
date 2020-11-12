@@ -6,36 +6,36 @@ from metrics import *
 weight_decay = 1e-4
 
 def w2v(args):
-    input = Input(shape=(684, 1, 1))
+    input = Input(shape=(3239, 1, 1))
     x = input
-    x = Flatten(input_shape=(684, 1, 1))(x)
+    x = Flatten(input_shape=(3239, 1, 1))(x)
     x = Dense(args.num_features, kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(weight_decay))(x)
-    output = Dense(684, activation='softmax', kernel_regularizer=regularizers.l2(weight_decay))(x)
+    output = Dense(3239, activation='softmax', kernel_regularizer=regularizers.l2(weight_decay))(x)
     return Model(input, output)
 
 def w2v_arcface(args):
-    input = Input(shape=(684, 1, 1))
-    y = Input(shape=(684,))
+    input = Input(shape=(3239, 1, 1))
+    y = Input(shape=(3239,))
     x = input
-    x = Flatten(input_shape=(684, 1, 1))(x)
+    x = Flatten(input_shape=(3239, 1, 1))(x)
     x = Dense(args.num_features, kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(weight_decay))(x)
-    output = ArcFace(684, regularizer=regularizers.l2(weight_decay))([x, y])
+    output = ArcFace(3239, regularizer=regularizers.l2(weight_decay))([x, y])
     return Model([input, y], output)
 
 def w2v_cosface(args):
-    input = Input(shape=(684, 1, 1))
-    y = Input(shape=(684,))
+    input = Input(shape=(3239, 1, 1))
+    y = Input(shape=(3239,))
     x = input
-    x = Flatten(input_shape=(684, 1, 1))(x)
+    x = Flatten(input_shape=(3239, 1, 1))(x)
     x = Dense(args.num_features, kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(weight_decay))(x)
-    output = CosFace(684, regularizer=regularizers.l2(weight_decay))([x, y])
+    output = CosFace(3239, regularizer=regularizers.l2(weight_decay))([x, y])
     return Model([input, y], output)
 
 def w2v_sphereface(args):
-    input = Input(shape=(684, 1, 1))
-    y = Input(shape=(684,))
+    input = Input(shape=(3239, 1, 1))
+    y = Input(shape=(3239,))
     x = input
-    x = Flatten(input_shape=(684, 1, 1))(x)
+    x = Flatten(input_shape=(3239, 1, 1))(x)
     x = Dense(args.num_features, kernel_initializer='he_normal', kernel_regularizer=regularizers.l2(weight_decay))(x)
-    output = SphereFace(684, regularizer=regularizers.l2(weight_decay))([x, y])
+    output = SphereFace(3239, regularizer=regularizers.l2(weight_decay))([x, y])
     return Model([input, y], output)

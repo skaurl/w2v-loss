@@ -9,9 +9,9 @@ import pickle
 import pandas as pd
 import numpy as np
 import re
+from tqdm import tqdm
 from konlpy.tag import Mecab
 from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import skipgrams
 
 url_base = 'https://raw.githubusercontent.com/e9t/nsmc/master/'
 
@@ -32,13 +32,32 @@ def _download():
         urllib.request.urlretrieve(url_base + "ratings.txt", file_path)
     print('Done')
 
+def skip_gram(df, window_size = 1):
+    skipgram = []
+    for i in tqdm(range(len(df))):
+        for j in range(len(df[i])):
+            for k in range(1,window_size+1):
+                if j-k>=0:
+                    try:
+                        if [df[i][j],df[i][j-k]] not in skipgram:
+                            skipgram.append([df[i][j],df[i][j-k]])
+                    except:
+                        pass
+                if j+k<len(df[i]):
+                    try:
+                        if [df[i][j],df[i][j+k]] not in skipgram:
+                            skipgram.append([df[i][j],df[i][j+k]])
+                    except:
+                        pass
+    return skipgram
+
 def main():
     _download()
     file_path = dataset_dir + '/' + "ratings.txt"
 
-    data = pd.read_csv(file_path, sep='\t', engine='python')[:100]
+    data = pd.read_csv(file_path, sep='\t', engine='python')
 
-    for i in range(len(data)):
+    for i in tqdm(range(len(data))):
         data.iloc[i, 1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i, 1]).strip()).split())
         data.iloc[i, 1] = " ".join(mecab.morphs(data.iloc[i, 1]))
 
@@ -62,34 +81,33 @@ def main():
 
     df = tokenizer.texts_to_sequences(df)
 
-    vocab_size = len(word2idx) + 1
+    with open(dataset_dir + '/' + "df.pickle", 'wb') as f:
+        pickle.dump(df, f)
 
-    skip_grams = [skipgrams(sample, vocabulary_size=vocab_size, window_size=2) for sample in df]
+    with open(dataset_dir + '/' + "df.pickle", 'rb') as f:
+        df = pickle.load(f)
 
-    inout = []
-
-    for i in range(len(skip_grams)):
-        inout.extend(skip_grams[i][0])
+    skip_grams = skip_gram(df,window_size=2)
 
     input = []
     output = []
 
-    for i in range(len(inout)):
-        inin = [0] * (vocab_size - 1)
-        inin[inout[i][0] - 1] = 1
+    for i in range(len(skip_grams)):
+        inin = [0] * (55822)
+        inin[skip_grams[i][0] - 1] = 1
         input.append(inin)
 
-        outout = [0] * (vocab_size - 1)
-        outout[inout[i][1] - 1] = 1
+        outout = [0] * (55822)
+        outout[skip_grams[i][1] - 1] = 1
         output.append(outout)
 
     input = np.array(input)
     output = np.array(output)
 
     np.save(dataset_dir + '/' + "input", input)
-    np.save(dataset_dir + '/' + "output", input)
+    np.save(dataset_dir + '/' + "output", output)
 
-    return df, word2idx, idx2word, input, output
+    return df
 
 if __name__ == '__main__':
     main()

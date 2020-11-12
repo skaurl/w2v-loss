@@ -14,7 +14,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--name', default=None,
                         help='model name: (default: arch+timestamp)')
-    parser.add_argument('--arch', '-a', metavar='ARCH', default='w2v_sphereface',
+    parser.add_argument('--arch', '-a', metavar='ARCH', default='w2v_arcface',
                         choices=arch_names,
                         help='model architecture: ' +
                             ' | '.join(arch_names) +
@@ -26,7 +26,7 @@ def parse_args():
                         help='scheduler: ' +
                             ' | '.join(['CosineAnnealing', 'None']) +
                             ' (default: CosineAnnealing)')
-    parser.add_argument('--epochs', default=10, type=int, metavar='N',
+    parser.add_argument('--epochs', default=1, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=128, type=int,
                         metavar='N', help='mini-batch size (default: 128)')
@@ -59,8 +59,6 @@ def main():
     X = np.load(os.path.dirname(os.path.abspath(__file__))[:-8] + "dataset/" + "input.npy")
     X = X.reshape(X.shape[0],X.shape[1],1,1)
     y = np.load(os.path.dirname(os.path.abspath(__file__))[:-8] + "dataset/" + "output.npy")
-
-    print(X.shape)
 
     if args.optimizer == 'SGD':
         optimizer = SGD(lr=args.lr, momentum=args.momentum)
