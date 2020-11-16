@@ -9,16 +9,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
-pkl_file = 'cbow_params.pkl'  # or 'skipgram_params.pkl'
-txt_file = 'ratings.txt'
-
 mecab = Mecab()
 
-with open(sys.path[1] + '/word2vec/' + pkl_file, 'rb') as f:
-    w2v = pickle.load(f)
+with open(sys.path[1] + '/dataset/' + "ratings.txt", 'r') as f:
+    data = pd.read_csv(f, sep = '\t')[99000:101000]
 
-with open(sys.path[1] + '/dataset/' + txt_file, 'r') as f:
-    data = pd.read_csv(f, sep = '\t')
+with open(sys.path[1] + '/dataset/' + "skip_grams.pickle", 'rb') as f:
+    skip_grams = pickle.load(f)
+
+with open(sys.path[1] + '/dataset/' + "word2idx.pickle", 'rb') as f:
+    word2idx = pickle.load(f)
+
+with open(sys.path[1] + '/word2vec/' + "w2v_arcface_vector.pickle", 'rb') as f:
+    w2v = pickle.load(f)
 
 x = []
 y = np.array(data['label'])
@@ -29,7 +32,10 @@ for i in range(len(data)):
     data.iloc[i,1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i,1]).strip()).split())
     tmp = mecab.morphs(data.iloc[i,1])
     for j in range(len(tmp)):
-        tmp[j] = w2v['word_vecs'][w2v['word_to_id'][tmp[j]]]
+        try:
+            tmp[j] = w2v[0][word2idx[tmp[j]]-1]
+        except:
+            tmp[j] = [0]*100
     if len(tmp) >= max_len:
         tmp = tmp[-max_len:]
     else:

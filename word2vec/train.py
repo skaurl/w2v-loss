@@ -5,6 +5,7 @@ import numpy as np
 import pickle
 from keras.optimizers import SGD, Adam
 from keras.callbacks import ModelCheckpoint, CSVLogger, TerminateOnNaN
+from keras.utils import to_categorical
 import archs
 from scheduler import *
 
@@ -26,7 +27,7 @@ def parse_args():
                         help='scheduler: ' +
                             ' | '.join(['CosineAnnealing', 'None']) +
                             ' (default: CosineAnnealing)')
-    parser.add_argument('--epochs', default=1, type=int, metavar='N',
+    parser.add_argument('--epochs', default=10, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=128, type=int,
                         metavar='N', help='mini-batch size (default: 128)')
@@ -56,9 +57,25 @@ def main():
         for arg in vars(args):
             print('%s: %s' %(arg, getattr(args, arg)), file=f)
 
-    X = np.load(os.path.dirname(os.path.abspath(__file__))[:-8] + "dataset/" + "input.npy")
-    X = X.reshape(X.shape[0],X.shape[1],1,1)
-    y = np.load(os.path.dirname(os.path.abspath(__file__))[:-8] + "dataset/" + "output.npy")
+    dataset_dir = os.path.dirname(os.path.abspath(__file__))[:-8]
+
+    with open(dataset_dir + 'dataset/' + "skip_grams.pickle", 'rb') as f:
+        skip_grams = pickle.load(f)
+
+    first_elem = []
+    second_elem = []
+    labels = []
+
+    for _, elem in enumerate(skip_grams):
+        first_elem.extend(list(zip(*elem[0]))[0])
+        second_elem.extend(list(zip(*elem[0]))[1])
+        labels.extend(elem[1])
+
+    first_elem = np.array(first_elem, dtype='int32') - 1
+    second_elem = np.array(second_elem, dtype='int32') - 1
+
+    X = to_categorical(first_elem)
+    y = to_categorical(second_elem)
 
     if args.optimizer == 'SGD':
         optimizer = SGD(lr=args.lr, momentum=args.momentum)

@@ -12,6 +12,7 @@ import re
 from tqdm import tqdm
 from konlpy.tag import Mecab
 from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import skipgrams
 
 url_base = 'https://raw.githubusercontent.com/e9t/nsmc/master/'
 
@@ -32,30 +33,11 @@ def _download():
         urllib.request.urlretrieve(url_base + "ratings.txt", file_path)
     print('Done')
 
-def skip_gram(df, window_size = 1):
-    skipgram = []
-    for i in tqdm(range(len(df))):
-        for j in range(len(df[i])):
-            for k in range(1,window_size+1):
-                if j-k>=0:
-                    try:
-                        if [df[i][j],df[i][j-k]] not in skipgram:
-                            skipgram.append([df[i][j],df[i][j-k]])
-                    except:
-                        pass
-                if j+k<len(df[i]):
-                    try:
-                        if [df[i][j],df[i][j+k]] not in skipgram:
-                            skipgram.append([df[i][j],df[i][j+k]])
-                    except:
-                        pass
-    return skipgram
-
 def main():
     _download()
     file_path = dataset_dir + '/' + "ratings.txt"
 
-    data = pd.read_csv(file_path, sep='\t', engine='python')
+    data = pd.read_csv(file_path, sep='\t', engine='python')[99000:101000]
 
     for i in tqdm(range(len(data))):
         data.iloc[i, 1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i, 1]).strip()).split())
@@ -71,43 +53,23 @@ def main():
     tokenizer.fit_on_texts(df)
 
     word2idx = tokenizer.word_index
-    idx2word = {v: k for k, v in word2idx.items()}
 
     with open(dataset_dir + '/' + "word2idx.pickle", 'wb') as f:
         pickle.dump(word2idx, f)
 
-    with open(dataset_dir + '/' + "idx2word.pickle", 'wb') as f:
-        pickle.dump(idx2word, f)
+    encoded = tokenizer.texts_to_sequences(df)
 
     df = tokenizer.texts_to_sequences(df)
 
     with open(dataset_dir + '/' + "df.pickle", 'wb') as f:
         pickle.dump(df, f)
 
-    with open(dataset_dir + '/' + "df.pickle", 'rb') as f:
-        df = pickle.load(f)
+    skip_grams = [skipgrams(sample, vocabulary_size=len(word2idx)+1, window_size=2) for sample in encoded]
 
-    skip_grams = skip_gram(df,window_size=2)
+    with open(dataset_dir + '/' + "skip_grams.pickle", 'wb') as f:
+        pickle.dump(skip_grams, f)
 
-    input = []
-    output = []
-
-    for i in range(len(skip_grams)):
-        inin = [0] * (55822)
-        inin[skip_grams[i][0] - 1] = 1
-        input.append(inin)
-
-        outout = [0] * (55822)
-        outout[skip_grams[i][1] - 1] = 1
-        output.append(outout)
-
-    input = np.array(input)
-    output = np.array(output)
-
-    np.save(dataset_dir + '/' + "input", input)
-    np.save(dataset_dir + '/' + "output", output)
-
-    return df
+    return skip_grams
 
 if __name__ == '__main__':
     main()
