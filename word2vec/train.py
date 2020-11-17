@@ -31,7 +31,7 @@ def parse_args():
                         help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=128, type=int,
                         metavar='N', help='mini-batch size (default: 128)')
-    parser.add_argument('--optimizer', default='SGD',
+    parser.add_argument('--optimizer', default='Adam',
                         choices=['Adam', 'SGD'],
                         help='loss: ' +
                             ' | '.join(['Adam', 'SGD']) +
@@ -64,23 +64,27 @@ def main():
 
     first_elem = []
     second_elem = []
+    labels = []
 
     for _, elem in enumerate(skip_grams):
         first_elem.extend(list(zip(*elem[0]))[0])
         second_elem.extend(list(zip(*elem[0]))[1])
+        labels.extend(elem[1])
 
-    first_elem = np.array(first_elem, dtype='int32') - 1
-    second_elem = np.array(second_elem, dtype='int32') - 1
+    first_elem = np.array(first_elem, dtype='int32')
+    second_elem = np.array(second_elem, dtype='int32')
+    labels = np.array(labels, dtype="float32")
 
-    X = to_categorical(first_elem)
-    y = to_categorical(second_elem)
+    X = [first_elem, second_elem]
+    X_face = [first_elem, second_elem, labels]
+    y = labels
 
     if args.optimizer == 'SGD':
         optimizer = SGD(lr=args.lr, momentum=args.momentum)
     elif args.optimizer == 'Adam':
         optimizer = Adam(lr=args.lr)
     model = archs.__dict__[args.arch](args)
-    model.compile(loss='categorical_crossentropy',
+    model.compile(loss='binary_crossentropy',
             optimizer=optimizer,
             metrics=['accuracy'])
     model.summary()
@@ -93,7 +97,7 @@ def main():
         callbacks.append(CosineAnnealingScheduler(T_max=args.epochs, eta_max=args.lr, eta_min=args.min_lr, verbose=1))
     if 'face' in args.arch:
         # callbacks.append(LambdaCallback(on_batch_end=lambda batch, logs: print('W has nan value!!') if np.sum(np.isnan(model.layers[-4].get_weights()[0])) > 0 else 0))
-        model.fit([X, y], y,
+        model.fit(X_face, y,
             batch_size=args.batch_size,
             epochs=args.epochs,
             callbacks=callbacks,

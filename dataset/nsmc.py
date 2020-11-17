@@ -37,7 +37,7 @@ def main():
     _download()
     file_path = dataset_dir + '/' + "ratings.txt"
 
-    data = pd.read_csv(file_path, sep='\t', engine='python')[:1000]
+    data = pd.read_csv(file_path, sep='\t', engine='python')
 
     for i in tqdm(range(len(data))):
         data.iloc[i, 1] = ' '.join(re.sub(r'[^가-힣]', ' ', str(data.iloc[i, 1]).strip()).split())
@@ -76,7 +76,7 @@ def main():
     with open(dataset_dir + '/' + "encoded.pickle", 'rb') as f:
         encoded = pickle.load(f)
 
-    skip_grams = [skipgrams(sample, vocabulary_size=2957, window_size=2) for sample in encoded]
+    skip_grams = [skipgrams(sample, vocabulary_size=52203, window_size=2) for sample in encoded]
     with open(dataset_dir + '/' + "skip_grams.pickle", 'wb') as f:
         pickle.dump(skip_grams, f)
 
