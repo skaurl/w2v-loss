@@ -12,7 +12,7 @@ from sklearn.metrics import accuracy_score, classification_report
 mecab = Mecab()
 
 with open(sys.path[1] + '/dataset/' + "ratings.txt", 'r') as f:
-    data = pd.read_csv(f, sep = '\t')[99000:101000]
+    data = pd.read_csv(f, sep = '\t')
 
 with open(sys.path[1] + '/dataset/' + "skip_grams.pickle", 'rb') as f:
     skip_grams = pickle.load(f)

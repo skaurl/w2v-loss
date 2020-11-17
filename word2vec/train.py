@@ -64,12 +64,10 @@ def main():
 
     first_elem = []
     second_elem = []
-    labels = []
 
     for _, elem in enumerate(skip_grams):
         first_elem.extend(list(zip(*elem[0]))[0])
         second_elem.extend(list(zip(*elem[0]))[1])
-        labels.extend(elem[1])
 
     first_elem = np.array(first_elem, dtype='int32') - 1
     second_elem = np.array(second_elem, dtype='int32') - 1
