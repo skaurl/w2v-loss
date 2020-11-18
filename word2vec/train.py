@@ -1,15 +1,15 @@
 import os
 import argparse
+import easydict
 import joblib
 import numpy as np
 import pickle
-from keras.optimizers import SGD, Adam
-from keras.callbacks import ModelCheckpoint, CSVLogger, TerminateOnNaN
-from keras.utils import to_categorical
+from tensorflow.keras.optimizers import SGD, Adam
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, TerminateOnNaN
 import archs
 from scheduler import *
 
-arch_names = archs.__dict__.keys()
+'''arch_names = archs.__dict__.keys()
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -27,25 +27,38 @@ def parse_args():
                         help='scheduler: ' +
                             ' | '.join(['CosineAnnealing', 'None']) +
                             ' (default: CosineAnnealing)')
-    parser.add_argument('--epochs', default=10, type=int, metavar='N',
+    parser.add_argument('--epochs', default=50, type=int, metavar='N',
                         help='number of total epochs to run')
-    parser.add_argument('-b', '--batch-size', default=128, type=int,
+    parser.add_argument('-b', '--batch-size', default=1024, type=int,
                         metavar='N', help='mini-batch size (default: 128)')
     parser.add_argument('--optimizer', default='Adam',
                         choices=['Adam', 'SGD'],
                         help='loss: ' +
                             ' | '.join(['Adam', 'SGD']) +
                             ' (default: Adam)')
-    parser.add_argument('--lr', '--learning-rate', default=1e-1, type=float,
+    parser.add_argument('--lr', '--learning-rate', default=1e-2, type=float,
                         metavar='LR', help='initial learning rate')
     parser.add_argument('--min-lr', default=1e-3, type=float,
                         help='minimum learning rate')
     parser.add_argument('--momentum', default=0.5, type=float)
     args = parser.parse_args()
-    return args
+    return args'''
+
+args = easydict.EasyDict({
+    "name":None,
+    "arch":"w2v_arcface",
+    "num_features":100,
+    "scheduler":"CosineAnnealing",
+    "epochs":50,
+    "batch_size":1024,
+    "optimizer":"Adam",
+    "lr":1e-2,
+    "min_lr":1e-3,
+    "momentum":0.5
+})
 
 def main():
-    args = parse_args()
+    #args = parse_args()
     args.name = '%s_%dd' %(args.arch, args.num_features)
     os.makedirs('models/%s' %args.name, exist_ok=True)
     print('Config -----')
@@ -57,9 +70,7 @@ def main():
         for arg in vars(args):
             print('%s: %s' %(arg, getattr(args, arg)), file=f)
 
-    dataset_dir = os.path.dirname(os.path.abspath(__file__))[:-8]
-
-    with open(dataset_dir + 'dataset/' + "skip_grams.pickle", 'rb') as f:
+    with open("/gdrive/My Drive/MacBook/skip_grams.pickle", 'rb') as f:
         skip_grams = pickle.load(f)
 
     first_elem = []
@@ -83,6 +94,7 @@ def main():
         optimizer = SGD(lr=args.lr, momentum=args.momentum)
     elif args.optimizer == 'Adam':
         optimizer = Adam(lr=args.lr)
+
     model = archs.__dict__[args.arch](args)
     model.compile(loss='binary_crossentropy',
             optimizer=optimizer,
@@ -109,7 +121,7 @@ def main():
             callbacks=callbacks,
             verbose=1)
 
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/' + args.arch + "_vector.pickle", 'wb') as f:
+    with open("/gdrive/My Drive/MacBook/" + args.arch + "_vector.pickle", 'wb') as f:
         pickle.dump(model.get_weights(), f)
 
 if __name__ == '__main__':
