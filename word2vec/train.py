@@ -49,10 +49,10 @@ args = easydict.EasyDict({
     "arch":"w2v_arcface",
     "num_features":100,
     "scheduler":"CosineAnnealing",
-    "epochs":200,
+    "epochs":100,
     "batch_size":1024,
     "optimizer":"SGD",
-    "lr":1e-2,
+    "lr":1e-1,
     "min_lr":1e-4,
     "momentum":0.5
 })
