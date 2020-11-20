@@ -31,14 +31,14 @@ def parse_args():
                         help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=1024, type=int,
                         metavar='N', help='mini-batch size (default: 128)')
-    parser.add_argument('--optimizer', default='Adam',
+    parser.add_argument('--optimizer', default='SGD',
                         choices=['Adam', 'SGD'],
                         help='loss: ' +
                             ' | '.join(['Adam', 'SGD']) +
                             ' (default: Adam)')
     parser.add_argument('--lr', '--learning-rate', default=1e-2, type=float,
                         metavar='LR', help='initial learning rate')
-    parser.add_argument('--min-lr', default=1e-3, type=float,
+    parser.add_argument('--min-lr', default=1e-4, type=float,
                         help='minimum learning rate')
     parser.add_argument('--momentum', default=0.5, type=float)
     args = parser.parse_args()
@@ -49,11 +49,11 @@ args = easydict.EasyDict({
     "arch":"w2v_arcface",
     "num_features":100,
     "scheduler":"CosineAnnealing",
-    "epochs":50,
+    "epochs":200,
     "batch_size":1024,
-    "optimizer":"Adam",
+    "optimizer":"SGD",
     "lr":1e-2,
-    "min_lr":1e-3,
+    "min_lr":1e-4,
     "momentum":0.5
 })
 

@@ -29,7 +29,7 @@ class ArcFace(Layer):
         target_logits = tf.cos(theta + self.m)
         logits = logits * (1 - y) + target_logits * y
         logits *= self.s
-        out = tf.nn.softmax(logits)
+        out = tf.nn.sigmoid(logits)
         return out
 
     def compute_output_shape(self, input_shape):
