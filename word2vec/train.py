@@ -50,10 +50,10 @@ args = easydict.EasyDict({
     "num_features":100,
     "scheduler":"CosineAnnealing",
     "epochs":100,
-    "batch_size":1024,
+    "batch_size":128,
     "optimizer":"SGD",
-    "lr":1e-1,
-    "min_lr":1e-4,
+    "lr":1e-6,
+    "min_lr":1e-6,
     "momentum":0.5
 })
 
