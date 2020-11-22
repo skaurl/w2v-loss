@@ -4,8 +4,9 @@ import easydict
 import joblib
 import numpy as np
 import pickle
+import tensorflow as tf
 from tensorflow.keras.optimizers import SGD, Adam
-from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, TerminateOnNaN
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, TerminateOnNaN, EarlyStopping
 import archs
 from scheduler import *
 
@@ -27,11 +28,11 @@ def parse_args():
                         help='scheduler: ' +
                             ' | '.join(['CosineAnnealing', 'None']) +
                             ' (default: CosineAnnealing)')
-    parser.add_argument('--epochs', default=50, type=int, metavar='N',
+    parser.add_argument('--epochs', default=100, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=1024, type=int,
-                        metavar='N', help='mini-batch size (default: 128)')
-    parser.add_argument('--optimizer', default='SGD',
+                        metavar='N', help='mini-batch size (default: 1024)')
+    parser.add_argument('--optimizer', default='Adam',
                         choices=['Adam', 'SGD'],
                         help='loss: ' +
                             ' | '.join(['Adam', 'SGD']) +
@@ -46,14 +47,14 @@ def parse_args():
 
 args = easydict.EasyDict({
     "name":None,
-    "arch":"w2v_arcface",
+    "arch":"w2v_sphereface",
     "num_features":100,
     "scheduler":"CosineAnnealing",
     "epochs":100,
-    "batch_size":128,
-    "optimizer":"SGD",
-    "lr":1e-6,
-    "min_lr":1e-6,
+    "batch_size":1024,
+    "optimizer":"Adam",
+    "lr":1e-2,
+    "min_lr":1e-4,
     "momentum":0.5
 })
 
@@ -84,7 +85,7 @@ def main():
 
     first_elem = np.array(first_elem, dtype='int32')
     second_elem = np.array(second_elem, dtype='int32')
-    labels = np.array(labels, dtype="float32")
+    labels = tf.keras.utils.to_categorical(labels, 2)
 
     X = [first_elem, second_elem]
     X_face = [first_elem, second_elem, labels]
@@ -96,15 +97,16 @@ def main():
         optimizer = Adam(lr=args.lr)
 
     model = archs.__dict__[args.arch](args)
-    model.compile(loss='binary_crossentropy',
+    model.compile(loss='categorical_crossentropy',
             optimizer=optimizer,
             metrics=['accuracy'])
     model.summary()
+    early_stopping = EarlyStopping(patience=5)
     callbacks = [
         ModelCheckpoint(os.path.join('models', args.name, 'model.hdf5'),
             verbose=1, save_best_only=True),
         CSVLogger(os.path.join('models', args.name, 'log.csv')),
-        TerminateOnNaN()]
+        TerminateOnNaN(),early_stopping]
     if args.scheduler == 'CosineAnnealing':
         callbacks.append(CosineAnnealingScheduler(T_max=args.epochs, eta_max=args.lr, eta_min=args.min_lr, verbose=1))
     if 'face' in args.arch:

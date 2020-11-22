@@ -4,7 +4,7 @@ from tensorflow.keras import regularizers
 import tensorflow as tf
 
 class ArcFace(Layer):
-    def __init__(self, n_classes=1, s=30.0, m=0.50, regularizer=None, **kwargs):
+    def __init__(self, n_classes=2, s=30.0, m=0.50, regularizer=None, **kwargs):
         super(ArcFace, self).__init__(**kwargs)
         self.n_classes = n_classes
         self.s = s
@@ -36,7 +36,7 @@ class ArcFace(Layer):
         return (None, self.n_classes)
 
 class SphereFace(Layer):
-    def __init__(self, n_classes=1, s=30.0, m=1.35, regularizer=None, **kwargs):
+    def __init__(self, n_classes=2, s=30.0, m=1.35, regularizer=None, **kwargs):
         super(SphereFace, self).__init__(**kwargs)
         self.n_classes = n_classes
         self.s = s
@@ -67,9 +67,8 @@ class SphereFace(Layer):
     def compute_output_shape(self, input_shape):
         return (None, self.n_classes)
 
-
 class CosFace(Layer):
-    def __init__(self, n_classes=1, s=30.0, m=0.35, regularizer=None, **kwargs):
+    def __init__(self, n_classes=2, s=30.0, m=0.35, regularizer=None, **kwargs):
         super(CosFace, self).__init__(**kwargs)
         self.n_classes = n_classes
         self.s = s
