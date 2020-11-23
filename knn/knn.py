@@ -24,7 +24,7 @@ def main():
         with open("/gdrive/My Drive/MacBook/word2idx.pickle", 'rb') as f:
             word2idx = pickle.load(f)
 
-        with open("/gdrive/My Drive/MacBook/w2v_vector.pickle", 'rb') as f:
+        with open("/gdrive/My Drive/MacBook/w2v_sphereface_vector.pickle", 'rb') as f:
             w2v = pickle.load(f)
 
         x = []

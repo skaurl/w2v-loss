@@ -28,7 +28,7 @@ def parse_args():
                         help='scheduler: ' +
                             ' | '.join(['CosineAnnealing', 'None']) +
                             ' (default: CosineAnnealing)')
-    parser.add_argument('--epochs', default=100, type=int, metavar='N',
+    parser.add_argument('--epochs', default=50, type=int, metavar='N',
                         help='number of total epochs to run')
     parser.add_argument('-b', '--batch-size', default=1024, type=int,
                         metavar='N', help='mini-batch size (default: 1024)')
@@ -47,10 +47,10 @@ def parse_args():
 
 args = easydict.EasyDict({
     "name":None,
-    "arch":"w2v_sphereface",
+    "arch":"w2v_cosface",
     "num_features":100,
     "scheduler":"CosineAnnealing",
-    "epochs":100,
+    "epochs":50,
     "batch_size":1024,
     "optimizer":"Adam",
     "lr":1e-2,
@@ -101,7 +101,7 @@ def main():
             optimizer=optimizer,
             metrics=['accuracy'])
     model.summary()
-    early_stopping = EarlyStopping(patience=5)
+    early_stopping = EarlyStopping(monitor='loss', patience=3)
     callbacks = [
         ModelCheckpoint(os.path.join('models', args.name, 'model.hdf5'),
             verbose=1, save_best_only=True),
