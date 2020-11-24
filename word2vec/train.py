@@ -47,7 +47,7 @@ def parse_args():
 
 args = easydict.EasyDict({
     "name":None,
-    "arch":"w2v_cosface",
+    "arch":"w2v_arcface",
     "num_features":100,
     "scheduler":"CosineAnnealing",
     "epochs":50,
@@ -101,12 +101,12 @@ def main():
             optimizer=optimizer,
             metrics=['accuracy'])
     model.summary()
-    early_stopping = EarlyStopping(monitor='loss', patience=3)
+    #early_stopping = EarlyStopping(monitor='loss', patience=3)
     callbacks = [
         ModelCheckpoint(os.path.join('models', args.name, 'model.hdf5'),
             verbose=1, save_best_only=True),
         CSVLogger(os.path.join('models', args.name, 'log.csv')),
-        TerminateOnNaN(),early_stopping]
+        TerminateOnNaN()]
     if args.scheduler == 'CosineAnnealing':
         callbacks.append(CosineAnnealingScheduler(T_max=args.epochs, eta_max=args.lr, eta_min=args.min_lr, verbose=1))
     if 'face' in args.arch:
