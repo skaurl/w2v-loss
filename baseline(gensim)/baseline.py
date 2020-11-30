@@ -1,11 +1,11 @@
 import sys
 sys.path.append('..')
-import pickle
 import pandas as pd
 import numpy as np
 import re
 from tqdm import tqdm
 from konlpy.tag import Mecab
+from gensim.models import Word2Vec
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
@@ -18,26 +18,24 @@ def main():
         with open("/gdrive/My Drive/MacBook/ratings.txt", 'r') as f:
             data = pd.read_csv(f, sep = '\t')
 
-        with open("/gdrive/My Drive/MacBook/skip_grams.pickle", 'rb') as f:
-            skip_grams = pickle.load(f)
+        corpus = []
 
-        with open("/gdrive/My Drive/MacBook/word2idx.pickle", 'rb') as f:
-            word2idx = pickle.load(f)
+        for i in tqdm(range(len(data))):
+            data.iloc[i, 1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i, 1]).strip()).split())
+            corpus.append(mecab.morphs(data.iloc[i, 1]))
 
-        with open("/gdrive/My Drive/MacBook/w2v_arcface_vector.pickle", 'rb') as f:
-            w2v = pickle.load(f)
+        model = Word2Vec(sentences=corpus, size=100, window=2, sg=0)
 
         x = []
         y = np.array(data['label'])
 
         max_len = 20 # avg = 16.278745
 
-        for i in tqdm(range(len(data))):
-            data.iloc[i,1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i,1]).strip()).split())
-            tmp = mecab.morphs(data.iloc[i,1])
+        for i in range(len(corpus)):
+            tmp = corpus[i]
             for j in range(len(tmp)):
                 try:
-                    tmp[j] = w2v[0][word2idx[tmp[j]]-1]
+                    tmp[j] = model.wv.get_vector(tmp[j]).tolist()
                 except:
                     tmp[j] = [0]*100
             if len(tmp) >= max_len:
