@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="435388db-ceba-4c8e-8bfc-04f353c9f235" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/knn/knn.py" beforeDir="false" afterPath="$PROJECT_DIR$/knn/knn.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +240,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606202952835</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Word2Vec">
+      <created>1606724537296</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1606724537296</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -249,17 +255,17 @@
     <option name="LAST_COMMIT_MESSAGE" value="Word2Vec" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="297" y="46" key="CommitChangelistDialog2" timestamp="1606202952516">
+    <state x="297" y="46" key="CommitChangelistDialog2" timestamp="1606724537070">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="297" y="46" key="CommitChangelistDialog2/0.23.1440.877@0.23.1440.877" timestamp="1606202952516" />
+    <state x="297" y="46" key="CommitChangelistDialog2/0.23.1440.877@0.23.1440.877" timestamp="1606724537070" />
     <state x="144" y="100" key="DiffContextDialog" timestamp="1606020106051">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="144" y="100" key="DiffContextDialog/0.23.1440.877@0.23.1440.877" timestamp="1606020106051" />
-    <state x="320" y="201" key="Vcs.Push.Dialog.v2" timestamp="1606202955742">
+    <state x="320" y="201" key="Vcs.Push.Dialog.v2" timestamp="1606724540868">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="320" y="201" key="Vcs.Push.Dialog.v2/0.23.1440.877@0.23.1440.877" timestamp="1606202955742" />
+    <state x="320" y="201" key="Vcs.Push.Dialog.v2/0.23.1440.877@0.23.1440.877" timestamp="1606724540868" />
   </component>
 </project>
