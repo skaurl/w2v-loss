@@ -24,7 +24,7 @@ def main():
             data.iloc[i, 1] = ' '.join(re.sub(r'[^0-9a-zA-Z가-힣]', ' ', str(data.iloc[i, 1]).strip()).split())
             corpus.append(mecab.morphs(data.iloc[i, 1]))
 
-        model = Word2Vec(sentences=corpus, size=100, window=2, sg=0)
+        model = Word2Vec(sentences=corpus, size=100, window=2, sg=1)
 
         x = []
         y = np.array(data['label'])
