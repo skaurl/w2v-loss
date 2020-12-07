@@ -47,7 +47,7 @@ def parse_args():
 
 args = easydict.EasyDict({
     "name":None,
-    "arch":"w2v_arcface",
+    "arch":"w2v_adacos",
     "num_features":100,
     "scheduler":"CosineAnnealing",
     "epochs":50,
@@ -110,7 +110,12 @@ def main():
     if args.scheduler == 'CosineAnnealing':
         callbacks.append(CosineAnnealingScheduler(T_max=args.epochs, eta_max=args.lr, eta_min=args.min_lr, verbose=1))
     if 'face' in args.arch:
-        # callbacks.append(LambdaCallback(on_batch_end=lambda batch, logs: print('W has nan value!!') if np.sum(np.isnan(model.layers[-4].get_weights()[0])) > 0 else 0))
+        model.fit(X_face, y,
+            batch_size=args.batch_size,
+            epochs=args.epochs,
+            callbacks=callbacks,
+            verbose=1)
+    elif 'ada' in args.arch:
         model.fit(X_face, y,
             batch_size=args.batch_size,
             epochs=args.epochs,

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="435388db-ceba-4c8e-8bfc-04f353c9f235" name="Default Changelist" comment="" />
+    <list default="true" id="435388db-ceba-4c8e-8bfc-04f353c9f235" name="Default Changelist" comment="Word2Vec">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/knn/knn.py" beforeDir="false" afterPath="$PROJECT_DIR$/knn/knn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/word2vec/archs.py" beforeDir="false" afterPath="$PROJECT_DIR$/word2vec/archs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/word2vec/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/word2vec/metrics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/word2vec/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/word2vec/train.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -259,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606971097234</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Word2Vec">
+      <created>1606983143864</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1606983143864</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -267,17 +280,17 @@
     <option name="LAST_COMMIT_MESSAGE" value="Word2Vec" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="297" y="45" key="CommitChangelistDialog2" timestamp="1606971096998">
+    <state x="297" y="45" key="CommitChangelistDialog2" timestamp="1607310184907">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="297" y="45" key="CommitChangelistDialog2/0.23.1440.877@0.23.1440.877" timestamp="1606971096998" />
+    <state x="297" y="45" key="CommitChangelistDialog2/0.23.1440.877@0.23.1440.877" timestamp="1607310184907" />
     <state x="144" y="100" key="DiffContextDialog" timestamp="1606020106051">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
     <state x="144" y="100" key="DiffContextDialog/0.23.1440.877@0.23.1440.877" timestamp="1606020106051" />
-    <state x="320" y="201" key="Vcs.Push.Dialog.v2" timestamp="1606971101124">
+    <state x="320" y="201" key="Vcs.Push.Dialog.v2" timestamp="1606983146140">
       <screen x="0" y="23" width="1440" height="877" />
     </state>
-    <state x="320" y="201" key="Vcs.Push.Dialog.v2/0.23.1440.877@0.23.1440.877" timestamp="1606971101124" />
+    <state x="320" y="201" key="Vcs.Push.Dialog.v2/0.23.1440.877@0.23.1440.877" timestamp="1606983146140" />
   </component>
 </project>
