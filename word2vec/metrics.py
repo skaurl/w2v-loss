@@ -5,6 +5,7 @@ from tensorflow.keras.layers import Layer
 from tensorflow.keras import regularizers
 from tensorflow.keras.initializers import Constant
 from tensorflow.python.keras.utils import tf_utils
+import tensorflow_probability as tfp
 
 def _resolve_training(layer, training):
     if training is None:
@@ -36,9 +37,8 @@ class AdaCos(Layer):
                                       aggregation=tf.VariableAggregation.MEAN)
 
     def call(self, inputs, training=None):
-        embedding, label = inputs
-        label = tf.reshape(label, [-1,2])
-        x = tf.nn.l2_normalize(embedding, axis=1)
+        x, y = inputs
+        x = tf.nn.l2_normalize(x, axis=1)
         w = tf.nn.l2_normalize(self._w, axis=0)
         logits = tf.matmul(x, w)
         is_dynamic = tf_utils.constant_value(self._is_dynamic)
@@ -50,12 +50,12 @@ class AdaCos(Layer):
             return self._s * logits
         else:
             theta = tf.math.acos(K.clip(logits, -1.0 + K.epsilon(), 1.0 - K.epsilon()))
-            b_avg = tf.where(label < 1.0, tf.exp(self._s * logits), tf.zeros_like(logits))
+            b_avg = tf.where(y < 1.0, tf.exp(self._s * logits), tf.zeros_like(logits))
             b_avg = tf.reduce_mean(tf.reduce_sum(b_avg, axis=1))
-            theta_class = tf.gather_nd(theta, tf.cast(label, tf.int32))
-            mid_index = tf.shape(theta_class)[0] // 2 + 1
-            theta_med = tf.nn.top_k(theta_class, mid_index).values[-1]
-            self._s.assign(tf.math.log(b_avg) /tf.math.cos(tf.minimum(math.pi / 4, theta_med)))
+            theta_class = tf.gather(theta, tf.cast(y, tf.int32))
+            theta_med = tfp.stats.percentile(theta_class, q=50)
+            self._s.assign(tf.math.log(b_avg) / tf.math.cos(tf.minimum(math.pi / 4, theta_med)))
+            self._s.assign_add(-0.5)
             logits *= self._s
             out = tf.nn.sigmoid(logits)
             return out
