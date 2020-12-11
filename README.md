@@ -9,6 +9,7 @@
   <li>Loss Function : Cross Entropy, SphereFace, CosFace, ArcFace, AdaCos</li>
 </div>
 
+# 최종 발표
 <div>
   <img src="https://user-images.githubusercontent.com/55614265/101853202-92e2a600-3ba2-11eb-97a1-2926c6ff3ad4.jpg">
   <img src="https://user-images.githubusercontent.com/55614265/101853211-95dd9680-3ba2-11eb-9a24-9f7810c749b5.jpg">
