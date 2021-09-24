@@ -9,24 +9,19 @@
   <li>Loss Function : Cross Entropy, SphereFace, CosFace, ArcFace, AdaCos</li>
 </div>
 
-# 최종 발표
-<div>
-  <img src="https://user-images.githubusercontent.com/55614265/101853202-92e2a600-3ba2-11eb-97a1-2926c6ff3ad4.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853211-95dd9680-3ba2-11eb-9a24-9f7810c749b5.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853213-96762d00-3ba2-11eb-960e-d27b6bc01cdb.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853215-970ec380-3ba2-11eb-9d61-a0caa82ff598.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853219-97a75a00-3ba2-11eb-8ce7-b6f3afa402c6.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853220-97a75a00-3ba2-11eb-9a0e-97bddcb4e24e.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853221-983ff080-3ba2-11eb-91e1-31e9a5d5feba.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853223-98d88700-3ba2-11eb-8c54-51a6ef8b2dca.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853225-98d88700-3ba2-11eb-9c0d-14d305f5277b.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853227-99711d80-3ba2-11eb-88ea-eb7de11c1324.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853228-99711d80-3ba2-11eb-8f14-5986e6dd1f78.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853231-9a09b400-3ba2-11eb-975d-503e3b688700.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853232-9a09b400-3ba2-11eb-8240-92d5c060e49c.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853235-9aa24a80-3ba2-11eb-95a9-1f9094ac2f8a.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853237-9b3ae100-3ba2-11eb-9a41-8538d31fc012.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853239-9bd37780-3ba2-11eb-99ec-1dd4b3042da4.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853240-9bd37780-3ba2-11eb-8316-7b009b7471a9.jpg">
-  <img src="https://user-images.githubusercontent.com/55614265/101853241-9c6c0e00-3ba2-11eb-93e5-408787939f34.jpg">
-</div>
+# 졸업논문
+
+![0001](https://user-images.githubusercontent.com/55614265/134622567-2cc0f0c6-29e6-444a-9ec4-c19fe2c8a21d.jpg)
+![0002](https://user-images.githubusercontent.com/55614265/134622572-2d028139-13c0-4e94-86b5-76af196f2bad.jpg)
+![0003](https://user-images.githubusercontent.com/55614265/134622574-3f6e6919-ceaa-47f4-8b0f-f2a9cca39bfd.jpg)
+![0004](https://user-images.githubusercontent.com/55614265/134622577-ee4998c8-4572-4587-9eee-fc44ff8b21a7.jpg)
+![0005](https://user-images.githubusercontent.com/55614265/134622579-2017ad18-c42d-4542-bb49-e12f7fceb9ef.jpg)
+![0006](https://user-images.githubusercontent.com/55614265/134622580-32db10df-f4a3-4d1e-9c9d-03eed8fc96f8.jpg)
+![0007](https://user-images.githubusercontent.com/55614265/134622582-35226e41-9a99-4d5b-97e7-f4b874106b1a.jpg)
+![0008](https://user-images.githubusercontent.com/55614265/134622583-a19d5fa6-06d8-4ff8-86d5-bcedcd51f7b9.jpg)
+![0009](https://user-images.githubusercontent.com/55614265/134622585-ad73f379-e4ee-4d47-ac3f-77c3ba78c716.jpg)
+![0010](https://user-images.githubusercontent.com/55614265/134622586-38745e7f-a77a-4040-ac93-9501e880907e.jpg)
+![0011](https://user-images.githubusercontent.com/55614265/134622587-15b55aef-aa42-4fe0-8cdf-9b04dd5d5977.jpg)
+![0012](https://user-images.githubusercontent.com/55614265/134622589-2ab13864-e7f2-4b28-a80e-df930556bffd.jpg)
+![0013](https://user-images.githubusercontent.com/55614265/134622592-473c08dd-4c6d-4b52-88d4-aef703261b0a.jpg)
+![0014](https://user-images.githubusercontent.com/55614265/134622593-b6c26202-4449-422f-87a0-d6128e4a6435.jpg)
