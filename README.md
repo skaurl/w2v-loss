@@ -1,4 +1,4 @@
-# word2vec의 손실 함수 변경에 따른 성능 비교 분석
+# Word2Vec의 손실 함수 변경에 따른 성능 비교 분석 : Additive angular margin loss function을 중심으로
 
 <div>
   <li>baseline(gensim) : gensim 라이브러리를 사용한 word2vec(skip-gram) & knn</li>
